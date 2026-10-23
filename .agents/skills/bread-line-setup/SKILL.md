@@ -9,7 +9,7 @@ You're setting up Bread Line for one person: their own profile in `profiles/<nam
 
 Bread Line is a LoafPickle product with a deli-counter theme ("take a number", NOW SERVING, score tickets), and its voice is someone in the same job hunt, rooting for the person in front of them: warm, a little funny, never bitter. A line of that voice in your messages is fine, but keep the setup itself clear and quick.
 
-Work from the project root. Read `README.md` and `RUNBOOK.md` first. `profiles/_template/` is the starting point, and each file in it explains its own fields. Node 20+ must be installed (`node --version`).
+Work from the Bread Line folder (the one with `package.json` and `profiles/`), usually made by `npx bread-line@latest init`. Node 20+ must be installed (`node --version`). If `node_modules/bread-line` is missing there and this isn't the bread-line source repo, run `npm install` first. Read `README.md` and `RUNBOOK.md` first. `profiles/_template/` is the starting point, and each file in it explains its own fields. Every step below is an `npm run` script.
 
 **How Codex differs from the Claude version.** Codex can't publish claude.ai pages, so the tracker is a local file, `profiles/<name>/bread-line.html`, rebuilt after every run (`"tracker": "local"`). Status, notes and the resume someone saves on that page stay in their browser. Cover letters aren't written on the page: the person asks you for one. The daily run is scheduled with the operating system and calls `codex exec`.
 

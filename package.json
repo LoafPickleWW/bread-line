@@ -1,9 +1,45 @@
 {
   "name": "bread-line",
   "version": "0.1.0",
-  "private": true,
+  "description": "A daily remote job radar: fetches 150+ job boards, filters to your roles, and has Claude Code or Codex score each job against your resume.",
+  "keywords": [
+    "jobs",
+    "job-search",
+    "job-board",
+    "resume",
+    "claude-code",
+    "codex",
+    "agent-skills",
+    "remote-jobs"
+  ],
+  "homepage": "https://jobs.loafpickle.com",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/LoafPickleWW/bread-line.git"
+  },
+  "bugs": {
+    "url": "https://github.com/LoafPickleWW/bread-line/issues"
+  },
+  "author": "LoafPickle Worldwide LLC (https://loafpickle.com)",
+  "license": "MIT",
   "type": "module",
-  "description": "Bread Line: a daily remote job radar. Fetch, filter and dedupe postings per profile, then hand off to Claude for scoring.",
+  "bin": {
+    "bread-line": "bin/bread-line.js"
+  },
+  "files": [
+    "bin/",
+    "src/",
+    "scripts/",
+    "!scripts/build-kit.js",
+    "tracker/",
+    "profiles/_template/",
+    ".claude/skills/",
+    ".agents/skills/",
+    "AGENTS.md",
+    "RUNBOOK.md",
+    "README.md",
+    "LICENSE"
+  ],
   "scripts": {
     "radar": "node src/fetch.js",
     "radar:dry": "node src/fetch.js --dry",
@@ -15,7 +51,10 @@
     "profile:new": "node scripts/new-profile.js",
     "profile:check": "node scripts/check-profile.js",
     "tracker:local": "node scripts/to-local.js",
-    "kit": "node scripts/build-kit.js"
+    "kit": "node scripts/build-kit.js",
+    "save-scores": "node scripts/save-scores.js",
+    "tracker:scores": "node scripts/scores-to-tracker.js",
+    "tracker:page": "node scripts/tracker-page.js"
   },
   "engines": {
     "node": ">=20"

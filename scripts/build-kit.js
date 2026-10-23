@@ -6,8 +6,8 @@ import { readFile, writeFile, readdir, mkdir } from 'node:fs/promises';
 import { deflateRawSync } from 'node:zlib';
 
 const root = new URL('../', import.meta.url);
-const INCLUDE = ['src', 'scripts', 'tracker', 'profiles/_template', '.claude/skills', '.agents/skills',
-  'README.md', 'RUNBOOK.md', 'AGENTS.md', 'package.json', '.gitignore'];
+const INCLUDE = ['bin', 'src', 'scripts', 'tracker', 'profiles/_template', '.claude/skills', '.agents/skills',
+  'README.md', 'RUNBOOK.md', 'AGENTS.md', 'package.json', '.gitignore', 'LICENSE'];
 
 async function walk(rel) {
   const url = new URL(rel, root);

@@ -94,6 +94,10 @@ section { padding-block: 88px; }
 .hero .sub { margin: 28px 0 0; max-width: 46ch; font-size: 19px; color: var(--ink-2); }
 .cta { display: flex; flex-wrap: wrap; gap: 14px; margin-top: 30px; align-items: center; }
 .fine { font: 500 12.5px/1.5 var(--f-mono); letter-spacing: .04em; color: var(--muted); margin-top: 18px; }
+.hero .cmd { margin-top: 28px; max-width: 470px; border: 2.5px solid var(--ink); box-shadow: 5px 5px 0 var(--red); }
+.hero .cmd code { font-size: 16px; }
+.alt { font-size: 14.5px; color: inherit; text-decoration-color: var(--red); text-decoration-thickness: 2px; text-underline-offset: 3px; }
+.alt:hover { color: var(--red); }
 .dl-msg { font-size: 14.5px; font-weight: 600; color: var(--red); min-height: 1.3em; margin-top: 12px; }
 
 /* The NOW SERVING sign and the dispenser under it */
@@ -271,7 +275,8 @@ footer .wrap { display: grid; grid-template-columns: auto minmax(0, 1fr) auto; g
     <nav>
       <a class="link" href="#how">How it works</a>
       <a class="link" href="#setup">Setup</a>
-      <a class="btn small primary dl" href="bread-line.zip" download>Get the kit</a>
+      <a class="link" href="https://github.com/LoafPickleWW/bread-line" target="_blank" rel="noopener">GitHub</a>
+      <a class="btn small primary" href="#setup">Get started</a>
     </nav>
   </div>
 </header>
@@ -283,13 +288,12 @@ footer .wrap { display: grid; grid-template-columns: auto minmax(0, 1fr) auto; g
         <span class="label">A job radar for the job hunt</span>
         <h1 style="margin-top:18px">Laid off?<span class="red">Take a number.</span></h1>
         <p class="sub">Bread Line reads 150+ company job boards every weekday morning, tosses what doesn&rsquo;t fit, and scores the rest against your resume. You wake up to a short line of roles worth your time.</p>
+        <div class="cmd"><code><span class="p">$ </span>npx bread-line@latest init</code><button class="copy" type="button" data-copy="npx bread-line@latest init">Copy</button></div>
         <div class="cta">
-          <a class="btn primary dl" href="bread-line.zip" download>
-            <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="square" aria-hidden="true"><path d="M8 2v8M4.5 6.5 8 10l3.5-3.5M3 13.5h10"/></svg>Download the kit</a>
-          <a class="btn" href="#setup">See setup</a>
+          <a class="btn primary" href="#setup">Get started</a>
+          <a class="btn" href="https://github.com/LoafPickleWW/bread-line" target="_blank" rel="noopener">View on GitHub</a>
         </div>
-        <div class="dl-msg" role="status"></div>
-        <div class="fine">Free &middot; about 65 KB &middot; runs on your computer in Claude Code or Codex</div>
+        <div class="fine">Free and open source &middot; MIT license &middot; runs on your computer in Claude Code or Codex</div>
       </div>
       <div class="station">
         <div class="sign" aria-label="Now serving number 07, an example morning batch">
@@ -397,13 +401,13 @@ footer .wrap { display: grid; grid-template-columns: auto minmax(0, 1fr) auto; g
       <div>
         <span class="label">Take your number</span>
         <h2 id="setup-h" style="margin-top:16px">Fifteen minutes at the counter</h2>
-        <p class="lede" style="margin-top:18px">The kit comes with a setup skill. It reads your resume, asks about ten questions, drafts your company watchlist, tests the filters on today&rsquo;s real postings, and schedules your weekday run.</p>
+        <p class="lede" style="margin-top:18px">One command installs it, and it comes with a setup skill. The skill reads your resume, asks about ten questions, drafts your company watchlist, tests the filters on today&rsquo;s real postings, and schedules your weekday run.</p>
         <ul class="needs">
           <li>Claude Code or Codex, signed in</li>
           <li>Node.js 20 or newer</li>
           <li>Your resume as a PDF, Word or text file</li>
         </ul>
-        <div class="cta"><a class="btn primary dl" href="bread-line.zip" download>Download the kit</a></div>
+        <p style="margin:26px 0 0;color:var(--counter-dim);font-size:14.5px">No npm? <a class="alt dl" href="bread-line.zip" download>Download the kit as a zip</a> and run <code>npm install</code> inside it.</p>
         <div class="dl-msg" role="status"></div>
       </div>
       <div>
@@ -413,7 +417,7 @@ footer .wrap { display: grid; grid-template-columns: auto minmax(0, 1fr) auto; g
         </div>
         <div role="tabpanel" id="panel-claude" aria-labelledby="tab-claude">
           <ol class="steps">
-            <li><div><b>Unzip the kit</b> somewhere it can stay, and open a terminal there.</div></li>
+            <li><div><b>Install it.</b> This makes a <code>bread-line</code> folder and installs the engine.<div class="cmd"><code><span class="p">$ </span>npx bread-line@latest init</code><button class="copy" type="button" data-copy="npx bread-line@latest init">Copy</button></div></div></li>
             <li><div><b>Start Claude Code</b> in the folder.<div class="cmd"><code><span class="p">$ </span>cd bread-line &amp;&amp; claude</code><button class="copy" type="button" data-copy="cd bread-line && claude">Copy</button></div></div></li>
             <li><div><b>Ask for the setup.</b> Or just say &ldquo;set up Bread Line for me.&rdquo;<div class="cmd"><code>/bread-line-setup</code><button class="copy" type="button" data-copy="/bread-line-setup">Copy</button></div></div></li>
             <li><div><b>Answer the questions.</b> You get a private Bread Line page on claude.ai that writes cover letters from your resume, and a fresh batch every weekday at 8.</div></li>
@@ -421,7 +425,7 @@ footer .wrap { display: grid; grid-template-columns: auto minmax(0, 1fr) auto; g
         </div>
         <div role="tabpanel" id="panel-codex" aria-labelledby="tab-codex" hidden>
           <ol class="steps">
-            <li><div><b>Unzip the kit</b> somewhere it can stay, and open a terminal there.</div></li>
+            <li><div><b>Install it.</b> This makes a <code>bread-line</code> folder and installs the engine.<div class="cmd"><code><span class="p">$ </span>npx bread-line@latest init</code><button class="copy" type="button" data-copy="npx bread-line@latest init">Copy</button></div></div></li>
             <li><div><b>Start Codex</b> in the folder.<div class="cmd"><code><span class="p">$ </span>cd bread-line &amp;&amp; codex</code><button class="copy" type="button" data-copy="cd bread-line && codex">Copy</button></div></div></li>
             <li><div><b>Ask for the setup.</b> Or just say &ldquo;set up Bread Line for me.&rdquo;<div class="cmd"><code>$bread-line-setup</code><button class="copy" type="button" data-copy="$bread-line-setup">Copy</button></div></div></li>
             <li><div><b>Answer the questions.</b> You get a Bread Line page saved on your computer and a run your system scheduler starts every weekday. Codex asks before it adds the schedule.</div></li>
@@ -458,6 +462,7 @@ footer .wrap { display: grid; grid-template-columns: auto minmax(0, 1fr) auto; g
         <details><summary>What does it cost?</summary><p>Bread Line is free. Scoring uses your own Claude or ChatGPT plan, about as much as a few minutes of chat each morning.</p></details>
         <details><summary>Which jobs does it cover?</summary><p>Remote roles. It targets the US by default, and the setup can point it at another region. It works best for roles at tech companies that post on Greenhouse, Lever or Ashby. Hybrid and on-site roles aren&rsquo;t supported yet.</p></details>
         <details><summary>What if my computer is off at 8?</summary><p>With Claude Code, the run starts the next time the Claude app opens. With Codex, it waits for the next weekday. Either way you can say &ldquo;run the job radar&rdquo; any time, and a missed or repeated run never loses or duplicates jobs.</p></details>
+        <details><summary>How do I get updates?</summary><p>Run <code>npm update bread-line</code> in your Bread Line folder. Your profiles, filters and job history aren&rsquo;t touched.</p></details>
         <details><summary>Can more than one person use one copy?</summary><p>Yes. Each person gets a profile folder of their own, with their own filters, watchlist, tracker and schedule.</p></details>
       </div>
     </div>
@@ -470,9 +475,9 @@ footer .wrap { display: grid; grid-template-columns: auto minmax(0, 1fr) auto; g
     <div class="foot-copy">
       <span class="hand">Hang in there. Your number&rsquo;s coming up.</span>
       <p>Bread Line is free for anyone in the job hunt. It was built by someone standing in the same line, for everyone else in it.</p>
-      <span class="made">Designed and built by LoafPickle Worldwide LLC &middot; <a href="https://loafpickle.com" target="_blank" rel="noopener">loafpickle.com</a></span>
+      <span class="made">Designed and built by LoafPickle Worldwide LLC &middot; <a href="https://loafpickle.com" target="_blank" rel="noopener">loafpickle.com</a> &middot; <a href="https://github.com/LoafPickleWW/bread-line" target="_blank" rel="noopener">GitHub</a></span>
     </div>
-    <a class="btn small primary dl" href="bread-line.zip" download>Get the kit</a>
+    <a class="btn small primary" href="#setup">Get started</a>
   </div>
 </footer>
 
