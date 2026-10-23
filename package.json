@@ -1,6 +1,6 @@
 {
   "name": "@loafpickleww/bread-line",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "A daily remote job radar: fetches 150+ job boards, filters to your roles, and has Claude Code or Codex score each job against your resume.",
   "keywords": [
     "jobs",
@@ -31,6 +31,7 @@
     "src/",
     "scripts/",
     "!scripts/build-kit.js",
+    "!scripts/sync-codex-plugin.js",
     "tracker/",
     "profiles/_template/",
     ".claude/skills/",
@@ -51,10 +52,11 @@
     "profile:new": "node scripts/new-profile.js",
     "profile:check": "node scripts/check-profile.js",
     "tracker:local": "node scripts/to-local.js",
-    "kit": "node scripts/build-kit.js",
+    "kit": "node scripts/sync-codex-plugin.js && node scripts/build-kit.js",
     "save-scores": "node scripts/save-scores.js",
     "tracker:scores": "node scripts/scores-to-tracker.js",
-    "tracker:page": "node scripts/tracker-page.js"
+    "tracker:page": "node scripts/tracker-page.js",
+    "plugins:sync": "node scripts/sync-codex-plugin.js"
   },
   "engines": {
     "node": ">=20"

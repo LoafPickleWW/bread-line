@@ -1,0 +1,71 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Privacy | Bread Line</title>
+<meta name="description" content="What Bread Line reads, stores and sends. Short version: it runs on your computer, and LoafPickle receives nothing.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@800;900&family=Instrument+Sans:wght@400;600;700&family=IBM+Plex+Mono:wght@500;600&display=swap">
+<style>
+:root { --wall: #ffffff; --ink: #0b0b0b; --ink-2: #3a3a3a; --muted: #6e6e6e; --line: #e4e4e2; --red: #e3141b; }
+@media (prefers-color-scheme: dark) { :root { --wall: #0b0b0b; --ink: #f5f5f3; --ink-2: #c8c8c4; --muted: #8c8c88; --line: #262626; --red: #ff3b30; color-scheme: dark; } }
+* { box-sizing: border-box; }
+body { margin: 0; background: var(--wall); color: var(--ink); font: 400 16px/1.6 "Instrument Sans", "Segoe UI", system-ui, sans-serif; -webkit-font-smoothing: antialiased; }
+a { color: inherit; text-decoration-color: var(--red); text-decoration-thickness: 2px; text-underline-offset: 3px; }
+a:hover { color: var(--red); }
+:focus-visible { outline: 3px solid var(--red); outline-offset: 3px; }
+.gutter { padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); }
+header { border-bottom: 2.5px solid var(--ink); }
+header .in { max-width: 760px; margin: 0 auto; padding-block: 14px; display: flex; justify-content: space-between; align-items: center; gap: 12px; }
+header b { font: 900 28px/.9 "Big Shoulders Display", Impact, sans-serif; text-transform: uppercase; }
+header a { text-decoration: none; font-weight: 600; font-size: 14.5px; }
+main { max-width: 760px; margin: 0 auto; padding-block: 48px 72px; }
+.label { font: 600 12px/1.2 "IBM Plex Mono", ui-monospace, monospace; letter-spacing: .16em; text-transform: uppercase; color: var(--red); }
+h1 { margin: 14px 0 0; font: 900 clamp(48px, 9vw, 84px)/.86 "Big Shoulders Display", Impact, sans-serif; text-transform: uppercase; text-wrap: balance; }
+h2 { margin: 40px 0 6px; font: 800 28px/1 "Big Shoulders Display", Impact, sans-serif; text-transform: uppercase; }
+p, li { color: var(--ink-2); }
+p { margin: 10px 0 0; }
+ul { margin: 10px 0 0; padding-left: 22px; display: grid; gap: 6px; }
+.short { margin-top: 24px; border: 2.5px solid var(--ink); box-shadow: 6px 6px 0 var(--red); padding: 18px 20px; font-size: 18px; color: var(--ink); }
+.updated { font: 500 12.5px "IBM Plex Mono", ui-monospace, monospace; color: var(--muted); margin-top: 40px; }
+footer { border-top: 2.5px solid var(--ink); padding-block: 28px 40px; text-align: center; font: 600 11px/1.6 "IBM Plex Mono", ui-monospace, monospace; letter-spacing: .12em; text-transform: uppercase; color: var(--muted); }
+</style>
+</head>
+<body>
+<header class="gutter"><div class="in"><b>Bread Line</b><a href="/">Back to the page</a></div></header>
+<main class="gutter">
+  <span class="label">Privacy</span>
+  <h1>Your resume stays yours</h1>
+  <p class="short">Bread Line is software that runs on your computer. LoafPickle Worldwide LLC has no accounts, no server and no analytics for it, so we receive nothing about you.</p>
+
+  <h2>What it reads</h2>
+  <p>Bread Line reads public job postings over HTTPS from Greenhouse, Lever and Ashby (the boards of the companies on your watchlist), Remotive, Remote OK, CryptoJobsList and Hacker News. Those requests name a company or a board. They never include your resume, your profile or your search settings. The requests identify the tool as &ldquo;bread-line&rdquo; in the user-agent header.</p>
+
+  <h2>What it stores, and where</h2>
+  <ul>
+    <li><b>In your Bread Line folder, on your computer:</b> your profile (role types, pay floor, off-limits topics), your company watchlist, the path to your resume file, and your job history with scores. Nothing else.</li>
+    <li><b>Your tracker page.</b> With Claude Code, it is a private page in your own claude.ai account that holds your jobs, notes, cover letters and the text of your resume. With Codex, it is a file on your computer, and your notes live in your browser&rsquo;s local storage.</li>
+    <li><b>LinkedIn alerts (optional).</b> If you turn them on, your agent reads job-alert emails in a Gmail inbox you choose, read-only. It never replies, clicks links or changes the mailbox.</li>
+  </ul>
+
+  <h2>Who sees your resume</h2>
+  <p>Your own coding agent (Claude Code or Codex) reads it to score jobs and write cover letters, under the terms and privacy policy of that provider and your account. The tracker page parses an uploaded resume in your browser. If you upload a PDF or Word file, it loads the open-source readers pdf.js and mammoth from cdnjs to do that. LoafPickle never receives your resume.</p>
+
+  <h2>What this website collects</h2>
+  <p>The page you are reading is hosted on Vercel, which keeps standard server logs such as IP addresses and requested pages. It loads fonts from Google Fonts. It sets no cookies and has no analytics or advertising.</p>
+
+  <h2>Deleting your data</h2>
+  <p>Delete your Bread Line folder to remove everything on your computer. With Claude Code, delete the tracker page from your claude.ai account to remove the rest. Uninstall by removing the folder, or <code>claude plugin uninstall bread-line</code> for the Claude Code plugin.</p>
+
+  <h2>Children</h2>
+  <p>Bread Line is built for adults looking for work and is not directed at children.</p>
+
+  <h2>Changes and contact</h2>
+  <p>If this policy changes, the new version will be on this page with a new date. Questions or requests: open an issue at <a href="https://github.com/LoafPickleWW/bread-line/issues">github.com/LoafPickleWW/bread-line/issues</a> or visit <a href="https://loafpickle.com">loafpickle.com</a>.</p>
+  <p class="updated">Last updated October 23, 2026</p>
+</main>
+<footer class="gutter">Bread Line &middot; Designed and built by LoafPickle Worldwide LLC &middot; <a href="https://loafpickle.com">loafpickle.com</a></footer>
+</body>
+</html>

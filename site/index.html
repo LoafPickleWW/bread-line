@@ -217,6 +217,9 @@ section { padding-block: 88px; }
 .manual code { font: 500 13.5px var(--f-mono); color: var(--counter-ink); }
 .shortcuts { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; margin-top: 14px; }
 .shortcuts > div { display: grid; gap: 8px; align-content: start; min-width: 0; }
+.shortcuts.one { grid-template-columns: minmax(0, 1fr); }
+.manual-h { margin: 22px 0 0; color: var(--counter-ink); font-weight: 600; }
+.manual > .manual-h:first-of-type { margin-top: 14px; }
 .shortcuts .label { color: var(--counter-dim); }
 .diff { width: 100%; border-collapse: collapse; margin-top: 30px; font-size: 14.5px; }
 .diff th, .diff td { text-align: left; padding: 10px 12px 10px 0; border-top: 1.5px solid #333; vertical-align: top; }
@@ -416,7 +419,7 @@ footer .wrap { display: grid; grid-template-columns: auto minmax(0, 1fr) auto; g
           <li>Node.js 20 or newer</li>
           <li>Your resume as a PDF, Word or text file</li>
         </ul>
-        <p style="margin:26px 0 0;color:var(--counter-dim);font-size:14.5px">No npm? <a class="alt dl" href="bread-line.zip" download>Download the kit as a zip</a> and run <code>npm install</code> inside it.</p>
+        <p style="margin:26px 0 0;color:var(--counter-dim);font-size:14.5px">No npm? <a class="alt dl" href="https://github.com/LoafPickleWW/bread-line/archive/refs/heads/main.zip">Download the repo as a zip from GitHub</a> and open your agent in the folder.</p>
         <div class="dl-msg" role="status"></div>
       </div>
       <div>
@@ -430,11 +433,17 @@ footer .wrap { display: grid; grid-template-columns: auto minmax(0, 1fr) auto; g
             <p>A fresh batch of scored jobs lands every weekday morning.</p></div></li>
         </ol>
         <details class="manual">
-          <summary>Rather start your agent yourself?</summary>
+          <summary>Other ways to start</summary>
+          <p class="manual-h">Start your agent yourself</p>
           <p>Run <code>cd bread-line</code>, open your agent, and say &ldquo;set up Bread Line for me&rdquo;, or use its shortcut:</p>
           <div class="shortcuts">
             <div><span class="label">Claude Code</span><div class="cmd"><code><span class="p">$ </span>claude</code><button class="copy" type="button" data-copy="claude">Copy</button></div><div class="cmd"><code>/bread-line-setup</code><button class="copy" type="button" data-copy="/bread-line-setup">Copy</button></div></div>
             <div><span class="label">Codex</span><div class="cmd"><code><span class="p">$ </span>codex</code><button class="copy" type="button" data-copy="codex">Copy</button></div><div class="cmd"><code>$bread-line-setup</code><button class="copy" type="button" data-copy="$bread-line-setup">Copy</button></div></div>
+          </div>
+          <p class="manual-h">Install it as a Claude Code plugin</p>
+          <p>Then the setup shows up in <code>/skills</code> from any folder, and makes its own Bread Line folder if you aren&rsquo;t in one. In a Claude Code session:</p>
+          <div class="shortcuts one">
+            <div><div class="cmd"><code>/plugin install bread-line --marketplace LoafPickleWW/bread-line</code><button class="copy" type="button" data-copy="/plugin install bread-line --marketplace LoafPickleWW/bread-line">Copy</button></div><div class="cmd"><code>/bread-line:bread-line-setup</code><button class="copy" type="button" data-copy="/bread-line:bread-line-setup">Copy</button></div></div>
           </div>
         </details>
         <div class="table-wrap">
@@ -481,7 +490,7 @@ footer .wrap { display: grid; grid-template-columns: auto minmax(0, 1fr) auto; g
     <div class="foot-copy">
       <span class="hand">Hang in there. Your number&rsquo;s coming up.</span>
       <p>Bread Line is free for anyone in the job hunt. It was built by someone standing in the same line, for everyone else in it.</p>
-      <span class="made">Designed and built by LoafPickle Worldwide LLC &middot; <a href="https://loafpickle.com" target="_blank" rel="noopener">loafpickle.com</a> &middot; <a href="https://github.com/LoafPickleWW/bread-line" target="_blank" rel="noopener">GitHub</a></span>
+      <span class="made">Designed and built by LoafPickle Worldwide LLC &middot; <a href="https://loafpickle.com" target="_blank" rel="noopener">loafpickle.com</a> &middot; <a href="https://github.com/LoafPickleWW/bread-line" target="_blank" rel="noopener">GitHub</a> &middot; <a href="privacy.html">Privacy</a></span>
     </div>
     <a class="btn small primary" href="#setup">Get started</a>
   </div>
@@ -490,7 +499,7 @@ footer .wrap { display: grid; grid-template-columns: auto minmax(0, 1fr) auto; g
 <script>
 // Download. Inside claude.ai, archives can't be published next to the page, so the kit ships as
 // bread-line-kit.json ({ files: { path: text } }) and is zipped here, then handed to the viewer's save prompt.
-// Anywhere else (your own site, with bread-line.zip beside this page), the links are ordinary downloads.
+// Anywhere else, the download links go to the repo zip on GitHub and are ordinary links.
 const dlMsg = (t) => document.querySelectorAll('.dl-msg').forEach((el) => { el.textContent = t; });
 const downloadsPromise = window.claude?.use ? window.claude.use('downloads').catch(() => null) : null;
 let jszip;

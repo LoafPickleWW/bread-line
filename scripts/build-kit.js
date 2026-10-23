@@ -1,14 +1,38 @@
-// Build the shareable kit from the engine: `npm run kit`
-// Writes site/bread-line.zip (for hosting next to the landing page anywhere) and site/bread-line-kit.json
-// (the same files as { files: { path: text } }, which the claude.ai landing page zips in the browser).
-// Only the shared parts go in: never a profile other than _template.
+// Check a release and build the landing page's kit: `npm run kit`
+// Fails if the engine, the installer, the Claude Code plugin and the Codex plugin aren't all at one version, or if the
+// setup skills don't pin their bootstrap command to it. Then writes site/bread-line-kit.json: the shareable files as
+// { files: { path: text } }, which the claude.ai landing page zips in the browser for its download button. That file is
+// generated and not committed. Only the shared parts go in: never a profile other than _template.
 import { readFile, writeFile, readdir, mkdir } from 'node:fs/promises';
-import { deflateRawSync } from 'node:zlib';
 
 const root = new URL('../', import.meta.url);
 const INCLUDE = ['bin', 'src', 'scripts', 'tracker', 'profiles/_template', '.claude/skills', '.agents/skills',
   'README.md', 'RUNBOOK.md', 'AGENTS.md', 'package.json', '.gitignore', 'LICENSE'];
 
+const readJson = async (rel) => JSON.parse(await readFile(new URL(rel, root), 'utf8'));
+const read = (rel) => readFile(new URL(rel, root), 'utf8');
+
+// ---- Release check ----
+const engine = await readJson('package.json');
+const installer = await readJson('create-bread-line/package.json');
+const versions = {
+  engine: engine.version,
+  installer: installer.version,
+  claudePlugin: (await readJson('.claude-plugin/plugin.json')).version,
+  codexPlugin: (await readJson('plugins/bread-line/plugin.json')).version,
+};
+const problems = [];
+if (new Set(Object.values(versions)).size !== 1) problems.push(`versions differ: ${JSON.stringify(versions)}`);
+if (installer.dependencies['@loafpickleww/bread-line'] !== '^' + engine.version) problems.push(`installer depends on ${installer.dependencies['@loafpickleww/bread-line']}, not ^${engine.version}`);
+for (const skill of ['.claude/skills/bread-line-setup/SKILL.md', '.agents/skills/bread-line-setup/SKILL.md']) {
+  if (!(await read(skill)).includes(`npm create bread-line@${engine.version}`)) problems.push(`${skill} doesn't pin npm create bread-line@${engine.version}`);
+}
+if ((await read('plugins/bread-line/skills/bread-line-setup/SKILL.md')) !== (await read('.agents/skills/bread-line-setup/SKILL.md'))) problems.push('plugins/bread-line is out of date: run npm run plugins:sync');
+if (problems.length) {
+  throw new Error('Release check failed:\n  - ' + problems.join('\n  - ') + '\nBump package.json, create-bread-line/package.json (and its dependency), .claude-plugin/plugin.json and the skills\' pinned command together, then run npm run plugins:sync.');
+}
+
+// ---- Kit ----
 async function walk(rel) {
   const url = new URL(rel, root);
   try {
@@ -21,38 +45,8 @@ async function walk(rel) {
 }
 const paths = (await Promise.all(INCLUDE.map(walk))).flat().sort();
 const files = {};
-for (const p of paths) files[`bread-line/${p}`] = await readFile(new URL(p, root), 'utf8');
-
-// A minimal zip writer: one deflated entry per file, UTF-8 names, forward slashes.
-const CRC = new Int32Array(256).map((_, n) => { let c = n; for (let k = 0; k < 8; k++) c = c & 1 ? 0xedb88320 ^ (c >>> 1) : c >>> 1; return c; });
-const crc32 = (buf) => { let c = -1; for (const b of buf) c = CRC[(c ^ b) & 0xff] ^ (c >>> 8); return (c ^ -1) >>> 0; };
-const local = [];
-const central = [];
-let offset = 0;
-for (const [name, text] of Object.entries(files)) {
-  const raw = Buffer.from(text, 'utf8');
-  const data = deflateRawSync(raw);
-  const nameBuf = Buffer.from(name, 'utf8');
-  const crc = crc32(raw);
-  const head = Buffer.alloc(30);
-  head.writeUInt32LE(0x04034b50, 0); head.writeUInt16LE(20, 4); head.writeUInt16LE(0x0800, 6); head.writeUInt16LE(8, 8);
-  head.writeUInt32LE(crc, 14); head.writeUInt32LE(data.length, 18); head.writeUInt32LE(raw.length, 22); head.writeUInt16LE(nameBuf.length, 26);
-  local.push(head, nameBuf, data);
-  const dir = Buffer.alloc(46);
-  dir.writeUInt32LE(0x02014b50, 0); dir.writeUInt16LE(20, 4); dir.writeUInt16LE(20, 6); dir.writeUInt16LE(0x0800, 8); dir.writeUInt16LE(8, 10);
-  dir.writeUInt32LE(crc, 16); dir.writeUInt32LE(data.length, 20); dir.writeUInt32LE(raw.length, 24); dir.writeUInt16LE(nameBuf.length, 28);
-  dir.writeUInt32LE(offset, 42);
-  central.push(dir, nameBuf);
-  offset += head.length + nameBuf.length + data.length;
-}
-const dirSize = central.reduce((n, b) => n + b.length, 0);
-const end = Buffer.alloc(22);
-end.writeUInt32LE(0x06054b50, 0); end.writeUInt16LE(paths.length, 8); end.writeUInt16LE(paths.length, 10);
-end.writeUInt32LE(dirSize, 12); end.writeUInt32LE(offset, 16);
-const zip = Buffer.concat([...local, ...central, end]);
+for (const p of paths) files[`bread-line/${p}`] = await read(p);
 
 await mkdir(new URL('site/', root), { recursive: true });
-await writeFile(new URL('site/bread-line.zip', root), zip);
-const version = JSON.parse(files['bread-line/package.json']).version;
-await writeFile(new URL('site/bread-line-kit.json', root), JSON.stringify({ version, files }));
-console.log(`${paths.length} files -> site/bread-line.zip (${Math.round(zip.length / 1024)} KB) and site/bread-line-kit.json`);
+await writeFile(new URL('site/bread-line-kit.json', root), JSON.stringify({ version: engine.version, files }));
+console.log(`Release ${engine.version} checks out. ${paths.length} files -> site/bread-line-kit.json`);

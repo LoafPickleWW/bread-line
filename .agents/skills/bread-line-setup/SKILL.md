@@ -9,7 +9,15 @@ You're setting up Bread Line for one person: their own profile in `profiles/<nam
 
 Bread Line is a LoafPickle product with a deli-counter theme ("take a number", NOW SERVING, score tickets), and its voice is someone in the same job hunt, rooting for the person in front of them: warm, a little funny, never bitter. A line of that voice in your messages is fine, but keep the setup itself clear and quick.
 
-Work from the Bread Line folder (the one with `package.json` and `profiles/`), usually made by `npm create bread-line@latest`. Node 20+ must be installed (`node --version`). If `node_modules/@loafpickleww/bread-line` is missing there and this isn't the bread-line source repo, run `npm install` first. Read `README.md` and `RUNBOOK.md` first. `profiles/_template/` is the starting point, and each file in it explains its own fields. Every step below is an `npm run` script.
+## Before you start: find the Bread Line folder
+
+Everything runs from a **Bread Line folder**: one with `package.json` and `profiles/`, made by `npm create bread-line`. Call it WORKSPACE. Node 20+ must be installed (`node --version`).
+
+- If the current folder is one (or is the bread-line source repo), WORKSPACE is the current folder.
+- Otherwise you were started somewhere else, for example through the Codex plugin or a skill installed for every folder. Tell them you're making a Bread Line folder at `~/bread-line` (in their home folder) to keep their profile, filters and job history in one place, then run `npm create bread-line@0.1.2 -- "<absolute path to ~/bread-line>" --no-launch` (the version is pinned to this skill's release on purpose). If that folder already exists and has `profiles/` in it, use it and say so. If it exists and is something else, ask where else to put it. WORKSPACE is that folder. Codex's sandbox normally only lets you write inside the folder it was started in, so if writing to `~/bread-line` is blocked, ask them to approve it, or to restart Codex from the folder they'd like to use.
+- Your own working directory may not be WORKSPACE, so run every command as `cd "<WORKSPACE>" && npm run ...` and use absolute paths under WORKSPACE for files you read or write. Inside WORKSPACE itself this changes nothing.
+- If `node_modules/@loafpickleww/bread-line` is missing in WORKSPACE and it isn't the source repo, run `npm install` there first.
+- Read WORKSPACE's `README.md` and `RUNBOOK.md`. `profiles/_template/` is the starting point, and each file in it explains its own fields. Every step below is an `npm run` script.
 
 **How Codex differs from the Claude version.** Codex can't publish claude.ai pages, so the tracker is a local file, `profiles/<name>/bread-line.html`, rebuilt after every run (`"tracker": "local"`). Status, notes and the resume someone saves on that page stay in their browser. Cover letters aren't written on the page: the person asks you for one. The daily run is scheduled with the operating system and calls `codex exec`.
 

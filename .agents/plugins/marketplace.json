@@ -1,0 +1,20 @@
+{
+  "name": "loafpickle",
+  "interface": {
+    "displayName": "LoafPickle"
+  },
+  "plugins": [
+    {
+      "name": "bread-line",
+      "source": {
+        "source": "local",
+        "path": "./plugins/bread-line"
+      },
+      "policy": {
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      "category": "Productivity"
+    }
+  ]
+}

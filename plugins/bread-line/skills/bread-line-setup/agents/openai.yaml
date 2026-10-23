@@ -1,0 +1,7 @@
+interface:
+  display_name: "Bread Line setup"
+  short_description: "Set up a daily remote job radar scored against your resume"
+  brand_color: "#D6262D"
+  default_prompt: "Set up Bread Line for me. Here's my resume:"
+policy:
+  allow_implicit_invocation: true

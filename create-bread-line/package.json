@@ -1,6 +1,6 @@
 {
   "name": "create-bread-line",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "Set up Bread Line, a daily remote job radar scored against your resume: npm create bread-line@latest",
   "keywords": [
     "bread-line",
@@ -28,7 +28,7 @@
     "LICENSE"
   ],
   "dependencies": {
-    "@loafpickleww/bread-line": "^0.1.1"
+    "@loafpickleww/bread-line": "^0.1.2"
   },
   "engines": {
     "node": ">=20"

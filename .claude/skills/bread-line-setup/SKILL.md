@@ -1,6 +1,6 @@
 ---
 name: bread-line-setup
-description: Set up Bread Line, the daily job radar, for a new person. Interviews them about the jobs they want, builds their profile (filters, scoring rubric, company watchlist), publishes their own Bread Line tracker page, and schedules the weekday run. Use when someone says "set me up", "add a profile", "set up Bread Line for <name>", or wants the job radar for themselves.
+description: Set up Bread Line, the daily job radar, for a new person. Interviews them about the jobs they want, builds their profile (filters, scoring rubric, company watchlist), publishes their own Bread Line tracker page, and schedules the weekday run. Works from any folder: it makes its own Bread Line folder if it isn't in one. Use when someone says "set me up", "add a profile", "set up Bread Line for <name>", or wants the job radar for themselves.
 ---
 
 # Bread Line setup
@@ -9,7 +9,15 @@ You're setting up Bread Line for one person: their own profile in `profiles/<nam
 
 Bread Line is a LoafPickle product with a deli-counter theme ("take a number", NOW SERVING, score tickets), and its voice is someone in the same job hunt, rooting for the person in front of them: warm, a little funny, never bitter. A line or two of that voice in your messages is fine, but keep the interview itself clear and quick.
 
-Work from the Bread Line folder (the one with `package.json` and `profiles/`), usually made by `npm create bread-line@latest`. If `node_modules/@loafpickleww/bread-line` is missing there and this isn't the bread-line source repo, run `npm install` first. Read `README.md` and `RUNBOOK.md` first. `profiles/_template/` is the starting point, and each file in it explains its own fields. Every step below is an `npm run` script.
+## Before you start: find the Bread Line folder
+
+Everything runs from a **Bread Line folder**: one with `package.json` and `profiles/`, made by `npm create bread-line`. Call it WORKSPACE. Node 20+ must be installed (`node --version`).
+
+- If the current folder is one (or is the bread-line source repo), WORKSPACE is the current folder.
+- Otherwise you were started somewhere else, for example through the Claude Code plugin or a skill installed for every folder. Tell them you're making a Bread Line folder at `~/bread-line` (in their home folder) to keep their profile, filters and job history in one place, then run `npm create bread-line@0.1.2 -- "<absolute path to ~/bread-line>" --no-launch` (the version is pinned to this skill's release on purpose). If that folder already exists and has `profiles/` in it, use it and say so. If it exists and is something else, ask where else to put it. WORKSPACE is that folder.
+- Your own working directory may not be WORKSPACE, so run every command as `cd "<WORKSPACE>" && npm run ...` and use absolute paths under WORKSPACE for files you read or write. Inside WORKSPACE itself this changes nothing.
+- If `node_modules/@loafpickleww/bread-line` is missing in WORKSPACE and it isn't the source repo, run `npm install` there first.
+- Read WORKSPACE's `README.md` and `RUNBOOK.md`. `profiles/_template/` is the starting point, and each file in it explains its own fields. Every step below is an `npm run` script.
 
 ## 1. Resume and name
 
@@ -48,7 +56,7 @@ Run `npm run profile:new -- <name>`, then fill in every file in `profiles/<name>
 ## 5. Publish their tracker page
 
 1. Run `npm run tracker:page -- --profile <name>`. It copies the installed tracker page to `profiles/<name>/tracker.html`. Publish that copy, never the template itself: in a session that already published a page from one file, publishing the same file again would overwrite that page.
-2. Publish with the Artifact tool: `file_path` set to the profile copy, `icon: "receipt"`, `description: "<Name>'s Bread Line: daily job matches, scored against their resume."`, and `capabilities: { "db": {}, "sample": {}, "downloads": true }`. `db` holds the jobs and the resume, `sample` writes cover letters, and `downloads` saves them as files. The page stays private unless they share it.
+2. Publish with the Artifact tool: `file_path` set to the profile copy's absolute path (`<WORKSPACE>/profiles/<name>/tracker.html`), `icon: "receipt"`, `description: "<Name>'s Bread Line: daily job matches, scored against their resume."`, and `capabilities: { "db": {}, "sample": {}, "downloads": true }`. `db` holds the jobs and the resume, `sample` writes cover letters, and `downloads` saves them as files. The page stays private unless they share it.
 3. Put the returned URL in `profile.json` as `trackerUrl`.
 4. Seed their resume so the first scoring run has it: ArtifactData `set` on collection `profile`, doc `resume`, with `{ "text": "<full resume text>", "filename": "<file name or 'Pasted text'>", "uploadedAt": "<ISO time>" }`. They can replace it later with the page's Resume button.
 5. Check it with ArtifactData `get` on `profile/resume`.
@@ -57,7 +65,7 @@ Run `npm run profile:new -- <name>`, then fill in every file in `profiles/<name>
 
 Create a scheduled task with `mcp__scheduled-tasks__create_scheduled_task` (load it with ToolSearch). Use a taskId like `bread-line-<name>`, the cron from the interview in local time, and this prompt with the blanks filled in:
 
-> Run the Bread Line daily pipeline for profile `<name>`. Work in the folder `<absolute project path>`. Follow RUNBOOK.md there exactly, with `<P>` = `profiles/<name>/`. Pass `--profile <name>` to every script (`npm run radar -- --profile <name>`, `npm run tracker:prep -- --meta-version <v> --profile <name>`). The tracker is `<trackerUrl>`; use the ArtifactData tool for it (ToolSearch "select:ArtifactData"). If any step fails, stop before the commit step and report what failed.
+> Run the Bread Line daily pipeline for profile `<name>`. Work in the folder `<WORKSPACE, as an absolute path>`. Follow RUNBOOK.md there exactly, with `<P>` = `profiles/<name>/`. Pass `--profile <name>` to every script (`npm run radar -- --profile <name>`, `npm run tracker:prep -- --meta-version <v> --profile <name>`). The tracker is `<trackerUrl>`; use the ArtifactData tool for it (ToolSearch "select:ArtifactData"). If any step fails, stop before the commit step and report what failed.
 
 Save the taskId and cron in `profile.json` under `schedule`. Only set `profiles/active.txt` to the new name if this person is the main user of this copy, and ask first if another profile is already active there.
 

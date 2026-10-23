@@ -1,0 +1,17 @@
+{
+  "name": "loafpickle",
+  "description": "Free tools by LoafPickle Worldwide",
+  "owner": {
+    "name": "LoafPickle Worldwide LLC",
+    "url": "https://loafpickle.com"
+  },
+  "plugins": [
+    {
+      "name": "bread-line",
+      "source": "./",
+      "description": "A daily remote job radar scored against your resume. Setup reads your resume, builds your filters and watchlist, and schedules a weekday run.",
+      "category": "productivity",
+      "tags": ["jobs", "job-search", "resume", "career"]
+    }
+  ]
+}
