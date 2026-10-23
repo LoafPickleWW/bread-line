@@ -193,23 +193,31 @@ section { padding-block: 88px; }
 .counter .btn { border-color: var(--counter-ink); box-shadow: 4px 4px 0 var(--red); }
 .counter .btn:hover { box-shadow: 5px 5px 0 var(--red); }
 .counter .btn:active { box-shadow: 1px 1px 0 var(--red); }
-.tabs { display: flex; gap: 0; margin-bottom: 22px; border: 2.5px solid var(--counter-ink); width: max-content; max-width: 100%; }
-.tabs button { border: 0; background: transparent; color: var(--counter-ink); padding: 9px 18px; font: 700 15px var(--f-body); cursor: pointer; }
-.tabs button + button { border-left: 2.5px solid var(--counter-ink); }
-.tabs button[aria-selected="true"] { background: var(--counter-ink); color: var(--counter); }
 .steps { list-style: none; margin: 0; padding: 0; display: grid; gap: 18px; counter-reset: s; }
 .steps li { counter-increment: s; display: grid; grid-template-columns: 52px minmax(0, 1fr); gap: 16px; align-items: start; }
 .steps li::before { content: counter(s, decimal-leading-zero); display: grid; place-items: center; width: 52px; height: 36px; background: var(--red); color: #fff;
   font: 900 22px/1 var(--f-sign);
   -webkit-mask: radial-gradient(circle 5px at 0 50%, #0000 98%, #000) left / 51% 100% no-repeat, radial-gradient(circle 5px at 100% 50%, #0000 98%, #000) right / 51% 100% no-repeat;
           mask: radial-gradient(circle 5px at 0 50%, #0000 98%, #000) left / 51% 100% no-repeat, radial-gradient(circle 5px at 100% 50%, #0000 98%, #000) right / 51% 100% no-repeat; }
-.steps li > div { min-width: 0; display: grid; gap: 8px; padding-top: 6px; color: var(--counter-dim); }
-.steps b { color: var(--counter-ink); font-weight: 700; }
+.steps li > div { min-width: 0; padding-top: 6px; color: var(--counter-dim); }
+.steps b { color: var(--counter-ink); font-weight: 700; font-size: 17px; }
+.steps p { margin: 4px 0 0; }
+.steps .cmd { margin-top: 12px; }
 .cmd { display: flex; align-items: center; gap: 8px; background: #000; color: #f5f5f3; border: 1.5px solid #333; padding: 10px 10px 10px 14px; min-width: 0; }
 .cmd code { flex: 1; min-width: 0; overflow-x: auto; white-space: pre; font: 500 14.5px var(--f-mono); scrollbar-width: thin; }
 .cmd code .p { color: var(--led); user-select: none; }
 .copy { flex: none; border: 1.5px solid #555; background: transparent; color: #f5f5f3; padding: 5px 11px; font: 600 12px var(--f-mono); cursor: pointer; }
 .copy:hover { border-color: #f5f5f3; }
+.manual { margin-top: 26px; border-top: 1.5px solid #333; padding-top: 16px; color: var(--counter-dim); }
+.manual summary { cursor: pointer; list-style: none; display: flex; justify-content: space-between; gap: 12px; color: var(--counter-ink); font-weight: 600; }
+.manual summary::-webkit-details-marker { display: none; }
+.manual summary::after { content: "+"; color: var(--red); font: 900 26px/1 var(--f-sign); }
+.manual[open] summary::after { content: "\2013"; }
+.manual p { margin: 12px 0 0; }
+.manual code { font: 500 13.5px var(--f-mono); color: var(--counter-ink); }
+.shortcuts { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; margin-top: 14px; }
+.shortcuts > div { display: grid; gap: 8px; align-content: start; min-width: 0; }
+.shortcuts .label { color: var(--counter-dim); }
 .diff { width: 100%; border-collapse: collapse; margin-top: 30px; font-size: 14.5px; }
 .diff th, .diff td { text-align: left; padding: 10px 12px 10px 0; border-top: 1.5px solid #333; vertical-align: top; }
 .diff thead th { font: 600 11.5px var(--f-mono); letter-spacing: .14em; text-transform: uppercase; color: var(--counter-dim); border-top: 0; }
@@ -256,6 +264,7 @@ footer .wrap { display: grid; grid-template-columns: auto minmax(0, 1fr) auto; g
   .receipt { max-width: 420px; justify-self: center; width: 100%; }
 }
 @media (max-width: 600px) {
+  .shortcuts { grid-template-columns: minmax(0, 1fr); }
   .top nav a.link { display: none; }
   .brand small { display: none; }
   section { padding-block: 60px; }
@@ -401,7 +410,7 @@ footer .wrap { display: grid; grid-template-columns: auto minmax(0, 1fr) auto; g
       <div>
         <span class="label">Take your number</span>
         <h2 id="setup-h" style="margin-top:16px">Fifteen minutes at the counter</h2>
-        <p class="lede" style="margin-top:18px">One command installs it, and it comes with a setup skill. The skill reads your resume, asks about ten questions, drafts your company watchlist, tests the filters on today&rsquo;s real postings, and schedules your weekday run.</p>
+        <p class="lede" style="margin-top:18px">One command installs it and starts the setup. It reads your resume, asks about ten questions, drafts your company watchlist, tests the filters on today&rsquo;s real postings, and schedules your weekday run.</p>
         <ul class="needs">
           <li>Claude Code or Codex, signed in</li>
           <li>Node.js 20 or newer</li>
@@ -411,26 +420,23 @@ footer .wrap { display: grid; grid-template-columns: auto minmax(0, 1fr) auto; g
         <div class="dl-msg" role="status"></div>
       </div>
       <div>
-        <div class="tabs" role="tablist" aria-label="Your agent">
-          <button role="tab" id="tab-claude" aria-selected="true" aria-controls="panel-claude">Claude Code</button>
-          <button role="tab" id="tab-codex" aria-selected="false" aria-controls="panel-codex" tabindex="-1">Codex</button>
-        </div>
-        <div role="tabpanel" id="panel-claude" aria-labelledby="tab-claude">
-          <ol class="steps">
-            <li><div><b>Install it.</b> This makes a <code>bread-line</code> folder and installs the engine.<div class="cmd"><code><span class="p">$ </span>npm create bread-line@latest</code><button class="copy" type="button" data-copy="npm create bread-line@latest">Copy</button></div></div></li>
-            <li><div><b>Start Claude Code</b> in the folder.<div class="cmd"><code><span class="p">$ </span>cd bread-line &amp;&amp; claude</code><button class="copy" type="button" data-copy="cd bread-line && claude">Copy</button></div></div></li>
-            <li><div><b>Ask for the setup.</b> Or just say &ldquo;set up Bread Line for me.&rdquo;<div class="cmd"><code>/bread-line-setup</code><button class="copy" type="button" data-copy="/bread-line-setup">Copy</button></div></div></li>
-            <li><div><b>Answer the questions.</b> You get a private Bread Line page on claude.ai that writes cover letters from your resume, and a fresh batch every weekday at 8.</div></li>
-          </ol>
-        </div>
-        <div role="tabpanel" id="panel-codex" aria-labelledby="tab-codex" hidden>
-          <ol class="steps">
-            <li><div><b>Install it.</b> This makes a <code>bread-line</code> folder and installs the engine.<div class="cmd"><code><span class="p">$ </span>npm create bread-line@latest</code><button class="copy" type="button" data-copy="npm create bread-line@latest">Copy</button></div></div></li>
-            <li><div><b>Start Codex</b> in the folder.<div class="cmd"><code><span class="p">$ </span>cd bread-line &amp;&amp; codex</code><button class="copy" type="button" data-copy="cd bread-line && codex">Copy</button></div></div></li>
-            <li><div><b>Ask for the setup.</b> Or just say &ldquo;set up Bread Line for me.&rdquo;<div class="cmd"><code>$bread-line-setup</code><button class="copy" type="button" data-copy="$bread-line-setup">Copy</button></div></div></li>
-            <li><div><b>Answer the questions.</b> You get a Bread Line page saved on your computer and a run your system scheduler starts every weekday. Codex asks before it adds the schedule.</div></li>
-          </ol>
-        </div>
+        <ol class="steps">
+          <li><div><b>Paste this in a terminal.</b>
+            <p>It makes a <code>bread-line</code> folder, installs the engine, and offers to open Claude Code or Codex on the setup.</p>
+            <div class="cmd"><code><span class="p">$ </span>npm create bread-line@latest</code><button class="copy" type="button" data-copy="npm create bread-line@latest">Copy</button></div></div></li>
+          <li><div><b>Answer the questions.</b>
+            <p>Have your resume ready as a file. About ten questions, then it builds your filters, watchlist and tracker.</p></div></li>
+          <li><div><b>That&rsquo;s it.</b>
+            <p>A fresh batch of scored jobs lands every weekday morning.</p></div></li>
+        </ol>
+        <details class="manual">
+          <summary>Rather start your agent yourself?</summary>
+          <p>Run <code>cd bread-line</code>, open your agent, and say &ldquo;set up Bread Line for me&rdquo;, or use its shortcut:</p>
+          <div class="shortcuts">
+            <div><span class="label">Claude Code</span><div class="cmd"><code><span class="p">$ </span>claude</code><button class="copy" type="button" data-copy="claude">Copy</button></div><div class="cmd"><code>/bread-line-setup</code><button class="copy" type="button" data-copy="/bread-line-setup">Copy</button></div></div>
+            <div><span class="label">Codex</span><div class="cmd"><code><span class="p">$ </span>codex</code><button class="copy" type="button" data-copy="codex">Copy</button></div><div class="cmd"><code>$bread-line-setup</code><button class="copy" type="button" data-copy="$bread-line-setup">Copy</button></div></div>
+          </div>
+        </details>
         <div class="table-wrap">
           <table class="diff">
             <thead><tr><th scope="col"><span class="sr">Feature</span></th><th scope="col">Claude Code</th><th scope="col">Codex</th></tr></thead>
@@ -526,26 +532,6 @@ document.getElementById('takeBtn').addEventListener('click', () => {
   const t = document.getElementById('pulled');
   t.classList.remove('out'); void t.offsetWidth; t.classList.add('out');
 });
-
-// Agent tabs
-const tabs = [...document.querySelectorAll('[role="tab"]')];
-function pick(tab) {
-  for (const t of tabs) {
-    const on = t === tab;
-    t.setAttribute('aria-selected', String(on)); t.tabIndex = on ? 0 : -1;
-    document.getElementById(t.getAttribute('aria-controls')).hidden = !on;
-  }
-  try { localStorage.setItem('breadline.agent', tab.id); } catch {}
-}
-tabs.forEach((t, i) => {
-  t.addEventListener('click', () => pick(t));
-  t.addEventListener('keydown', (e) => {
-    if (e.key !== 'ArrowRight' && e.key !== 'ArrowLeft') return;
-    const next = tabs[(i + (e.key === 'ArrowRight' ? 1 : tabs.length - 1)) % tabs.length];
-    pick(next); next.focus();
-  });
-});
-try { const saved = document.getElementById(localStorage.getItem('breadline.agent')); if (saved) pick(saved); } catch {}
 
 // Copy buttons
 document.querySelectorAll('.copy').forEach((b) => b.addEventListener('click', async () => {

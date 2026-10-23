@@ -4,6 +4,7 @@
 import { spawnSync } from 'node:child_process';
 import { cpSync, existsSync, mkdirSync, readdirSync, readFileSync, writeFileSync } from 'node:fs';
 import { resolve, basename, relative } from 'node:path';
+import { createInterface } from 'node:readline/promises';
 import { fileURLToPath } from 'node:url';
 
 const PKG = fileURLToPath(new URL('../', import.meta.url));
@@ -29,8 +30,9 @@ const STEPS = {
 const HELP = `Bread Line ${VERSION}: a daily remote job radar, scored against your resume.
 
 Start:
-  npm create bread-line@latest [folder]  set up a Bread Line folder (default: ./bread-line)
-  then open Claude Code or Codex in it and say "set up Bread Line for me"
+  npm create bread-line@latest [folder]  set up a Bread Line folder (default: ./bread-line),
+                                         then offer to start Claude Code or Codex on the setup
+    --agent claude|codex   start that agent without asking     --no-launch   just make the folder
 
 Daily steps (run inside the folder; add --profile <name> for a profile other than the active one):
 ${Object.keys(STEPS).map((c) => '  bread-line ' + c).join('\n')}
@@ -70,12 +72,20 @@ Made by LoafPickle Worldwide LLC - https://jobs.loafpickle.com
 
 const [cmd, ...rest] = process.argv.slice(2);
 
+// Agents the setup can start, with how to launch each one on a first prompt.
+const AGENTS = [
+  { id: 'claude', label: 'Claude Code', bin: 'claude' },
+  { id: 'codex', label: 'Codex', bin: 'codex' },
+];
+const SETUP_PROMPT = 'set up Bread Line for me';
+const onPath = (bin) => spawnSync(process.platform === 'win32' ? 'where' : 'which', [bin], { stdio: 'ignore' }).status === 0;
+
 if (!cmd || cmd === 'help' || cmd === '--help' || cmd === '-h') {
   console.log(HELP);
 } else if (cmd === '--version' || cmd === '-v') {
   console.log(VERSION);
 } else if (cmd === 'init') {
-  init(rest);
+  await init(rest);
 } else if (STEPS[cmd]) {
   const [script, ...fixed] = STEPS[cmd];
   const r = spawnSync(process.execPath, [resolve(PKG, script), ...fixed, ...rest], { stdio: 'inherit' });
@@ -85,9 +95,13 @@ if (!cmd || cmd === 'help' || cmd === '--help' || cmd === '-h') {
   process.exit(1);
 }
 
-function init(args) {
+async function init(args) {
   const noInstall = args.includes('--no-install');
-  const dest = resolve(args.find((a) => !a.startsWith('--')) ?? 'bread-line');
+  const noLaunch = args.includes('--no-launch');
+  const ai = args.indexOf('--agent');
+  const wanted = ai > -1 ? args[ai + 1] : null;
+  const folderArg = args.find((a, i) => !a.startsWith('--') && args[i - 1] !== '--agent');
+  const dest = resolve(folderArg ?? 'bread-line');
   if (existsSync(dest) && readdirSync(dest).length) {
     console.error(`${dest} already has files in it. Pick an empty or new folder: npm create bread-line@latest <folder>`);
     process.exit(1);
@@ -120,13 +134,42 @@ function init(args) {
       console.error(`\nThe install didn't finish. Run \`npm install\` inside ${where}, then carry on below.`);
     }
   }
-  console.log(`
-Bread Line is set up in ${where}.
+  console.log(`\nBread Line is set up in ${where}.`);
 
-Next:
-  cd ${where.includes(' ') ? `"${where}"` : where}
+  // Start the setup for them: pick an agent (asking only when there's a real choice), then open it in the new
+  // folder with the setup prompt already entered, so the whole install is one command.
+  const found = AGENTS.filter((a) => onPath(a.bin));
+  let agent = wanted ? AGENTS.find((a) => a.id === wanted) : null;
+  if (wanted && !agent) console.error(`Unknown agent "${wanted}". Use claude or codex.`);
+  if (!agent && !noLaunch && !noInstall && found.length && process.stdin.isTTY && process.stdout.isTTY) {
+    const rl = createInterface({ input: process.stdin, output: process.stdout });
+    try {
+      if (found.length === 1) {
+        const yes = (await rl.question(`\nStart the setup now in ${found[0].label}? Have your resume handy. [Y/n] `)).trim().toLowerCase();
+        if (yes === '' || yes === 'y' || yes === 'yes') agent = found[0];
+      } else {
+        console.log('\nStart the setup now? Have your resume handy.');
+        found.forEach((a, i) => console.log(`  ${i + 1}) ${a.label}`));
+        const pick = (await rl.question('Pick one, or press Enter to skip: ')).trim();
+        agent = found[Number(pick) - 1] ?? found.find((a) => a.id === pick.toLowerCase()) ?? null;
+      }
+    } finally { rl.close(); }
+  }
+  if (agent && !onPath(agent.bin)) {
+    console.error(`${agent.label} isn't installed here (no \`${agent.bin}\` on your PATH), so open it yourself below.`);
+    agent = null;
+  }
+  if (agent && !noLaunch) {
+    console.log(`\nOpening ${agent.label}...\n`);
+    const r = spawnSync(`${agent.bin} "${SETUP_PROMPT}"`, { cwd: dest, stdio: 'inherit', shell: true });
+    process.exit(r.status ?? 0);
+  }
+  const cdTarget = where.includes(' ') ? `"${where}"` : where;
+  console.log(`
+To start the setup yourself:
+  cd ${cdTarget}
   claude     (or: codex)
 
-Then say: "set up Bread Line for me". Have your resume handy as a PDF, Word or text file.`);
+Then say: "${SETUP_PROMPT}". Have your resume handy as a PDF, Word or text file.`);
 }
 

@@ -10,11 +10,11 @@ You need Node.js 20+, Claude Code or Codex, and your resume as a PDF, Word or te
 
 ```
 npm create bread-line@latest
-cd bread-line
-claude        # or: codex
 ```
 
-Then say **"set up Bread Line for me"** (or run `/bread-line-setup` in Claude Code, `$bread-line-setup` in Codex). The setup reads your resume, asks about ten questions, drafts your company watchlist, tests the filters on today's real postings, sets up your tracker page and schedules your weekday run. It takes about fifteen minutes.
+That makes a `bread-line` folder, installs the engine, and offers to open Claude Code or Codex there with **"set up Bread Line for me"** already entered. Say yes and answer the questions. To skip the offer, add `--no-launch`; to skip the question and pick an agent, add `--agent claude` or `--agent codex` (`npm create bread-line@latest -- --agent codex`).
+
+Prefer to start it yourself? `cd bread-line`, open `claude` or `codex`, and say "set up Bread Line for me" (or run `/bread-line-setup` in Claude Code, `$bread-line-setup` in Codex). The setup reads your resume, asks about ten questions, drafts your company watchlist, tests the filters on today's real postings, sets up your tracker page and schedules your weekday run. It takes about fifteen minutes.
 
 | | Claude Code | Codex |
 |---|---|---|
