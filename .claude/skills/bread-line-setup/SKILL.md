@@ -36,7 +36,7 @@ Use AskUserQuestion, in two or three rounds of at most four questions each. Turn
 - **Location.** Remote US, remote in another region, or a city. The engine keeps only remote roles. If they want on-site or hybrid roles in a city, tell them it isn't supported yet and set up remote-only.
 - **Pay floor.** Roles whose posted top of range is below it are hidden; roles with no posted pay stay. "No floor" is fine.
 - **LinkedIn alerts.** Optional, and only for someone whose Gmail is connected to Claude. They forward LinkedIn job-alert emails to that inbox, and the run reads them. Default to off.
-- **Run time.** Default weekdays at 8 AM local. The Claude app has to be open for the run to start; if it isn't, the run happens the next time the app opens.
+- **Run time.** Default weekdays at 8 AM local. In the Claude desktop app the run starts through a scheduled task, and the app has to be open; if it isn't, the run happens the next time the app opens. In terminal Claude Code there is no scheduled-task tool, so step 6 offers running it by hand or the system scheduler instead.
 
 ## 3. Create the profile
 
@@ -63,11 +63,20 @@ Run `npm run profile:new -- <name>`, then fill in every file in `profiles/<name>
 
 ## 6. Schedule the run
 
-Create a scheduled task with `mcp__scheduled-tasks__create_scheduled_task` (load it with ToolSearch). Use a taskId like `bread-line-<name>`, the cron from the interview in local time, and this prompt with the blanks filled in:
+First find out which scheduler you have. Try to load `mcp__scheduled-tasks__create_scheduled_task` with ToolSearch (query `select:mcp__scheduled-tasks__create_scheduled_task`).
+
+**If it loads (the Claude desktop app):** create a scheduled task with it. Use a taskId like `bread-line-<name>`, the cron from the interview in local time, and this prompt with the blanks filled in:
 
 > Run the Bread Line daily pipeline for profile `<name>`. Work in the folder `<WORKSPACE, as an absolute path>`. Follow RUNBOOK.md there exactly, with `<P>` = `profiles/<name>/`. Pass `--profile <name>` to every script (`npm run radar -- --profile <name>`, `npm run tracker:prep -- --meta-version <v> --profile <name>`). The tracker is `<trackerUrl>`; use the ArtifactData tool for it (ToolSearch "select:ArtifactData"). If any step fails, stop before the commit step and report what failed.
 
-Save the taskId and cron in `profile.json` under `schedule`. Only set `profiles/active.txt` to the new name if this person is the main user of this copy, and ask first if another profile is already active there.
+Save the taskId and cron in `profile.json` under `schedule`.
+
+**If it doesn't exist (terminal Claude Code):** that tool only ships in the Claude desktop app, so say so plainly in one sentence, then ask which they prefer (AskUserQuestion, recommended option first):
+
+1. **Run it by hand (recommended).** Leave `schedule` empty in `profile.json`. Tell them: on any weekday, open Claude Code in `<WORKSPACE>` and say "run the job radar for <name>". A missed day loses nothing, because jobs are marked seen only after they reach the tracker.
+2. **Use the system scheduler (experimental).** Write `<WORKSPACE>/profiles/<name>/run.cmd` on Windows, or `run.sh` (made executable) on macOS and Linux. It changes to `<WORKSPACE>`, appends its output to `profiles/<name>/data/runs/scheduled.log`, and runs `claude -p "<the prompt above, on one line>" --permission-mode acceptEdits --allowedTools "Bash(npm run:*)" "Bash(node:*)" Read Write Edit ToolSearch ArtifactData`. Run the script once now, so they see an unattended run work, and read them the log. If it stops on a permission, widen `--allowedTools` or fall back to option 1. Only then, with their clear yes, schedule it: Windows `schtasks /Create /TN "Bread Line <name>" /TR "\"<absolute path>\run.cmd\"" /SC WEEKLY /D MON,TUE,WED,THU,FRI /ST 08:00`; macOS and Linux a crontab line `0 8 * * 1-5 <absolute path>/run.sh`. Save the task name as `taskId` and the cron in `profile.json` under `schedule`, and tell them how to remove it.
+
+Either way, only set `profiles/active.txt` to the new name if this person is the main user of this copy, and ask first if another profile is already active there.
 
 ## 7. Check and first run
 

@@ -37,7 +37,7 @@ Prefer to start it yourself? `cd bread-line`, open `claude` or `codex`, and say 
 |---|---|---|
 | Tracker | Private page on claude.ai | Page saved on your computer |
 | Cover letters | One click on each job | Ask Codex in the folder |
-| Schedule | Claude app scheduled task | Your system scheduler (`codex exec`) |
+| Schedule | Claude desktop app scheduled task; in a terminal, run it by hand or use your system scheduler | Your system scheduler (`codex exec`) |
 | LinkedIn alerts | Optional, through Gmail | Not yet |
 
 ## What it runs, reads and stores
