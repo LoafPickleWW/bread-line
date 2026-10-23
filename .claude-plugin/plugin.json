@@ -1,7 +1,7 @@
 {
   "name": "bread-line",
   "displayName": "Bread Line",
-  "version": "0.1.2",
+  "version": "0.1.3",
   "description": "A daily remote job radar scored against your resume. The setup skill reads your resume, builds your filters and company watchlist, and schedules a weekday run.",
   "author": {
     "name": "LoafPickle Worldwide LLC",

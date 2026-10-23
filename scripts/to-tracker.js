@@ -7,6 +7,7 @@ import { readFile, writeFile, mkdir, readdir, unlink } from 'node:fs/promises';
 import { existsSync } from 'node:fs';
 import { root, dataDir, DATA_REL } from '../src/profile.js';
 import { ROLE_CATEGORIES } from '../src/config.js';
+import { abs } from '../src/workspace.js';
 
 const outDir = new URL('tracker/', dataDir);
 const jobs = JSON.parse(await readFile(new URL('new-jobs.json', dataDir), 'utf8'));
@@ -54,7 +55,7 @@ for (const j of jobs) {
   };
   const file = `${DATA_REL}tracker/jobs/${id.replace(/:/g, '__')}.json`; // Windows filenames can't hold ':'
   await writeFile(new URL(file, root), JSON.stringify(doc, null, 2) + '\n');
-  writes.push({ op: 'set', collection: 'jobs', doc_id: id, file_path: file });
+  writes.push({ op: 'set', collection: 'jobs', doc_id: id, file_path: abs(file) });
 }
 
 const scored = jobs.filter((j) => scores[j.id]?.score != null).sort((a, b) => scores[b.id].score - scores[a.id].score);
@@ -75,7 +76,7 @@ writes.push({
   op: 'set',
   collection: 'meta',
   doc_id: 'latestRun',
-  file_path: `${DATA_REL}tracker/meta/latestRun.json`,
+  file_path: abs(`${DATA_REL}tracker/meta/latestRun.json`),
   ...(metaVersion ? { if_version: metaVersion } : {}),
 });
 

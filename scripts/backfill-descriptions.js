@@ -5,7 +5,7 @@ import { readFile, writeFile, mkdir } from 'node:fs/promises';
 import { fetchBoard } from '../src/sources/ats.js';
 import { BOARDS } from '../src/sources/boards.js';
 import { root, dataDir, DATA_REL } from '../src/profile.js';
-import { positionals } from '../src/workspace.js';
+import { positionals, abs } from '../src/workspace.js';
 
 const version = Number(positionals()[0] ?? 2);
 const scores = JSON.parse(await readFile(new URL('scores.json', dataDir), 'utf8'));
@@ -27,7 +27,7 @@ for (const id of ids) {
   if (!d) continue;
   const file = `${DATA_REL}tracker/desc/${docId(id).replace(/:/g, '__')}.json`;
   await writeFile(new URL(file, root), JSON.stringify({ description: d.slice(0, 6000) }) + '\n');
-  writes.push({ op: 'update', collection: 'jobs', doc_id: docId(id), file_path: file, if_version: version });
+  writes.push({ op: 'update', collection: 'jobs', doc_id: docId(id), file_path: abs(file), if_version: version });
 }
 const batches = [];
 for (let i = 0; i < writes.length; i += 50) batches.push(writes.slice(i, i + 50));

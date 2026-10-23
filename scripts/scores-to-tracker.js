@@ -4,7 +4,7 @@
 // Run `npm run tracker:prep` first so data/tracker/meta/latestRun.json carries the new top 3.
 import { readFile, writeFile, mkdir } from 'node:fs/promises';
 import { root, dataDir, DATA_REL } from '../src/profile.js';
-import { positionals } from '../src/workspace.js';
+import { positionals, abs } from '../src/workspace.js';
 
 const version = Number(positionals()[0] ?? 1);
 const jobs = JSON.parse(await readFile(new URL('new-jobs.json', dataDir), 'utf8'));
@@ -19,9 +19,9 @@ for (const j of jobs) {
   const id = docId(j.id);
   const file = `${DATA_REL}tracker/scores/${id.replace(/:/g, '__')}.json`;
   await writeFile(new URL(file, root), JSON.stringify({ score: s.score, reason: s.reason, gaps: s.gaps, headline: s.headline }) + '\n');
-  writes.push({ op: 'update', collection: 'jobs', doc_id: id, file_path: file, if_version: version });
+  writes.push({ op: 'update', collection: 'jobs', doc_id: id, file_path: abs(file), if_version: version });
 }
-writes.push({ op: 'set', collection: 'meta', doc_id: 'latestRun', file_path: `${DATA_REL}tracker/meta/latestRun.json`, if_version: version });
+writes.push({ op: 'set', collection: 'meta', doc_id: 'latestRun', file_path: abs(`${DATA_REL}tracker/meta/latestRun.json`), if_version: version });
 
 const batches = [];
 for (let i = 0; i < writes.length; i += 50) batches.push(writes.slice(i, i + 50));

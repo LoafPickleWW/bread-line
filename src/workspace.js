@@ -3,7 +3,7 @@
 // $BREADLINE_HOME, else the nearest folder at or above the current one that has a profiles/ folder, else the
 // current folder (for `init` and first runs).
 import { existsSync } from 'node:fs';
-import { pathToFileURL } from 'node:url';
+import { pathToFileURL, fileURLToPath } from 'node:url';
 import { resolve, dirname } from 'node:path';
 
 export const PKG = new URL('../', import.meta.url);
@@ -19,6 +19,10 @@ function findWorkspace() {
   }
 }
 export const root = pathToFileURL(findWorkspace() + '/');
+
+// A workspace-relative path as an absolute one. The tracker batches use these, because the tool that loads them
+// resolves relative paths against the folder the agent was started in, which isn't always the workspace.
+export const abs = (rel) => fileURLToPath(new URL(rel, root)).replace(/\\/g, '/');
 
 // Positional arguments, skipping flags and the values of flags that take one:
 // `save-scores --profile sam pass.json` and `save-scores pass.json --profile sam` both give ['pass.json'].
