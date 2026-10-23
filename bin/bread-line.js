@@ -67,7 +67,7 @@ The scheduled run follows RUNBOOK.md. To run it by hand, say "run the job radar"
 Everything about you lives in \`profiles/\`, which .gitignore keeps out of git. Bread Line only reads public job
 boards; it never applies for jobs or messages anyone.
 
-Made by LoafPickle Worldwide LLC - https://jobs.loafpickle.com
+Made by LoafPickle Worldwide LLC.
 `;
 
 const [cmd, ...rest] = process.argv.slice(2);
