@@ -1,0 +1,6 @@
+{
+  "_note": "Watchlist. Each row is [\"Company\", \"slug-guess\", ...more guesses]. `npm run discover -- --profile <name>` probes Greenhouse, Lever and Ashby for each and writes the working boards to companies.json. Category names are free-form; jobs carry them as companyCategory.",
+  "example-category": [
+    ["Example Co", "exampleco", "example"]
+  ]
+}

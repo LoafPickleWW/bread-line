@@ -1,0 +1,11 @@
+{
+  "name": "Your Name",
+  "tracker": "claude",
+  "trackerUrl": null,
+  "resumeFallback": null,
+  "salaryFloorUsd": 0,
+  "boards": ["remotive", "remoteok", "hackernews"],
+  "remotiveCategories": ["marketing", "product"],
+  "linkedin": null,
+  "schedule": { "taskId": null, "cron": "0 8 * * 1-5" }
+}

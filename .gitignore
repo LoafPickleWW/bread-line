@@ -1,0 +1,4 @@
+# Profiles hold resumes, job history and personal filters. Only the blank template is shared.
+profiles/*
+!profiles/_template/
+node_modules/

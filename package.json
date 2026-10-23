@@ -1,0 +1,23 @@
+{
+  "name": "bread-line",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "Bread Line: a daily remote job radar. Fetch, filter and dedupe postings per profile, then hand off to Claude for scoring.",
+  "scripts": {
+    "radar": "node src/fetch.js",
+    "radar:dry": "node src/fetch.js --dry",
+    "discover": "node scripts/discover.js",
+    "show": "node scripts/show.js",
+    "tracker:prep": "node scripts/to-tracker.js",
+    "digest": "node scripts/digest.js",
+    "radar:commit": "node scripts/commit.js",
+    "profile:new": "node scripts/new-profile.js",
+    "profile:check": "node scripts/check-profile.js",
+    "tracker:local": "node scripts/to-local.js",
+    "kit": "node scripts/build-kit.js"
+  },
+  "engines": {
+    "node": ">=20"
+  }
+}
