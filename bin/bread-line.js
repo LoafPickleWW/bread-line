@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-// The `bread-line` command. `npx bread-line@latest init` sets up a workspace folder; every other command runs one
+// The `bread-line` command. `npm create bread-line@latest` sets up a workspace folder; every other command runs one
 // engine step for the workspace you're in (see src/workspace.js), e.g. `bread-line radar --profile sam`.
 import { spawnSync } from 'node:child_process';
 import { cpSync, existsSync, mkdirSync, readdirSync, readFileSync, writeFileSync } from 'node:fs';
@@ -29,7 +29,7 @@ const STEPS = {
 const HELP = `Bread Line ${VERSION}: a daily remote job radar, scored against your resume.
 
 Start:
-  npx bread-line@latest init [folder]   set up a Bread Line folder (default: ./bread-line)
+  npm create bread-line@latest [folder]  set up a Bread Line folder (default: ./bread-line)
   then open Claude Code or Codex in it and say "set up Bread Line for me"
 
 Daily steps (run inside the folder; add --profile <name> for a profile other than the active one):
@@ -58,7 +58,7 @@ The scheduled run follows RUNBOOK.md. To run it by hand, say "run the job radar"
 
 ## Updating
 
-\`npm update bread-line\` gets the newest engine. Your profiles are untouched.
+\`npm update @loafpickleww/bread-line\` gets the newest engine. Your profiles are untouched.
 
 ## Privacy
 
@@ -89,7 +89,7 @@ function init(args) {
   const noInstall = args.includes('--no-install');
   const dest = resolve(args.find((a) => !a.startsWith('--')) ?? 'bread-line');
   if (existsSync(dest) && readdirSync(dest).length) {
-    console.error(`${dest} already has files in it. Pick an empty or new folder: npx bread-line@latest init <folder>`);
+    console.error(`${dest} already has files in it. Pick an empty or new folder: npm create bread-line@latest <folder>`);
     process.exit(1);
   }
   mkdirSync(dest, { recursive: true });
@@ -108,7 +108,7 @@ function init(args) {
     type: 'module',
     scripts: Object.fromEntries(Object.keys(STEPS).map((c) => [c, `bread-line ${c}`])),
     // BREADLINE_SPEC lets a test install point at a local tarball before a version is on npm.
-    dependencies: { 'bread-line': process.env.BREADLINE_SPEC || `^${VERSION}` },
+    dependencies: { '@loafpickleww/bread-line': process.env.BREADLINE_SPEC || `^${VERSION}` },
   };
   writeFileSync(resolve(dest, 'package.json'), JSON.stringify(pkg, null, 2) + '\n');
 

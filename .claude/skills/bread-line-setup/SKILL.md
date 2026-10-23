@@ -9,7 +9,7 @@ You're setting up Bread Line for one person: their own profile in `profiles/<nam
 
 Bread Line is a LoafPickle product with a deli-counter theme ("take a number", NOW SERVING, score tickets), and its voice is someone in the same job hunt, rooting for the person in front of them: warm, a little funny, never bitter. A line or two of that voice in your messages is fine, but keep the interview itself clear and quick.
 
-Work from the Bread Line folder (the one with `package.json` and `profiles/`), usually made by `npx bread-line@latest init`. If `node_modules/bread-line` is missing there and this isn't the bread-line source repo, run `npm install` first. Read `README.md` and `RUNBOOK.md` first. `profiles/_template/` is the starting point, and each file in it explains its own fields. Every step below is an `npm run` script.
+Work from the Bread Line folder (the one with `package.json` and `profiles/`), usually made by `npm create bread-line@latest`. If `node_modules/@loafpickleww/bread-line` is missing there and this isn't the bread-line source repo, run `npm install` first. Read `README.md` and `RUNBOOK.md` first. `profiles/_template/` is the starting point, and each file in it explains its own fields. Every step below is an `npm run` script.
 
 ## 1. Resume and name
 

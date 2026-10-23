@@ -9,7 +9,7 @@ Free, open source, and it runs on your own computer. By [LoafPickle Worldwide](h
 You need Node.js 20+, Claude Code or Codex, and your resume as a PDF, Word or text file.
 
 ```
-npx bread-line@latest init
+npm create bread-line@latest
 cd bread-line
 claude        # or: codex
 ```
@@ -34,7 +34,7 @@ A missed or repeated run never loses or duplicates jobs: they're marked seen onl
 
 ## Your folder
 
-`init` makes a folder that holds only your stuff. The engine lives in `node_modules/bread-line`, so `npm update bread-line` gets fixes without touching your profiles.
+`init` makes a folder that holds only your stuff. The engine lives in `node_modules/@loafpickleww/bread-line`, so `npm update @loafpickleww/bread-line` gets fixes without touching your profiles.
 
 ```
 bread-line/
@@ -72,7 +72,7 @@ Inside your folder, `npm run <step>` runs a step for the active profile; add `--
 
 ## Working on Bread Line itself
 
-Clone the repo and run the same scripts from its root; it works as a Bread Line folder too. `src/` is the engine (sources, filters, config defaults), `scripts/` are the steps, `tracker/index.html` is the tracker page, and `bin/bread-line.js` is the command. Everything personal belongs in a profile, never in `src/` or `scripts/`. `npm run kit` builds the zip offered on the landing page (`site/`).
+Clone the repo and run the same scripts from its root; it works as a Bread Line folder too. `src/` is the engine (sources, filters, config defaults), `scripts/` are the steps, `tracker/index.html` is the tracker page, and `bin/bread-line.js` is the command. `create-bread-line/` is the tiny package behind `npm create bread-line`: it runs the engine's `init`. Everything personal belongs in a profile, never in `src/` or `scripts/`. `npm run kit` builds the zip offered on the landing page (`site/`).
 
 ## License
 

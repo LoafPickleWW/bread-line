@@ -1,0 +1,25 @@
+{
+  "name": "create-bread-line",
+  "version": "0.1.0",
+  "description": "Set up Bread Line, a daily remote job radar scored against your resume: npm create bread-line@latest",
+  "keywords": ["bread-line", "jobs", "job-search", "claude-code", "codex", "create"],
+  "homepage": "https://jobs.loafpickle.com",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/LoafPickleWW/bread-line.git",
+    "directory": "create-bread-line"
+  },
+  "author": "LoafPickle Worldwide LLC (https://loafpickle.com)",
+  "license": "MIT",
+  "type": "module",
+  "bin": {
+    "create-bread-line": "index.js"
+  },
+  "files": ["index.js", "README.md", "LICENSE"],
+  "dependencies": {
+    "@loafpickleww/bread-line": "^0.1.0"
+  },
+  "engines": {
+    "node": ">=20"
+  }
+}

@@ -2,7 +2,7 @@
 
 These are the steps a profile's scheduled weekday task follows. You can follow the same steps by hand on any day the morning run was missed: open Claude in this folder and say "run the job radar" (add "for <name>" for a profile other than the active one). Running it twice is safe, because jobs are only marked as seen after they reach the tracker.
 
-Folder: the Bread Line folder (the one with `package.json` and `profiles/`). Run every command from there. Every step is an `npm run` script, so the same commands work in a folder made by `npx bread-line init` and in the bread-line source repo.
+Folder: the Bread Line folder (the one with `package.json` and `profiles/`). Run every command from there. Every step is an `npm run` script, so the same commands work in a folder made by `npm create bread-line@latest` and in the bread-line source repo.
 
 **Which profile.** `<P>` below means `profiles/<name>/`. Use the profile the task names, else the one in `profiles/active.txt`. When it isn't the active one, add `--profile <name>` after the `--` of every `npm run` command (a command without one gets `-- --profile <name>`). Read `<P>profile.json` first: it gives the tracker URL (`trackerUrl`), the resume fallback (`resumeFallback`), the LinkedIn settings (`linkedin`) and which boards are on (`boards`). Every ArtifactData call below goes to `trackerUrl`.
 

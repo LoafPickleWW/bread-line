@@ -288,7 +288,7 @@ footer .wrap { display: grid; grid-template-columns: auto minmax(0, 1fr) auto; g
         <span class="label">A job radar for the job hunt</span>
         <h1 style="margin-top:18px">Laid off?<span class="red">Take a number.</span></h1>
         <p class="sub">Bread Line reads 150+ company job boards every weekday morning, tosses what doesn&rsquo;t fit, and scores the rest against your resume. You wake up to a short line of roles worth your time.</p>
-        <div class="cmd"><code><span class="p">$ </span>npx bread-line@latest init</code><button class="copy" type="button" data-copy="npx bread-line@latest init">Copy</button></div>
+        <div class="cmd"><code><span class="p">$ </span>npm create bread-line@latest</code><button class="copy" type="button" data-copy="npm create bread-line@latest">Copy</button></div>
         <div class="cta">
           <a class="btn primary" href="#setup">Get started</a>
           <a class="btn" href="https://github.com/LoafPickleWW/bread-line" target="_blank" rel="noopener">View on GitHub</a>
@@ -417,7 +417,7 @@ footer .wrap { display: grid; grid-template-columns: auto minmax(0, 1fr) auto; g
         </div>
         <div role="tabpanel" id="panel-claude" aria-labelledby="tab-claude">
           <ol class="steps">
-            <li><div><b>Install it.</b> This makes a <code>bread-line</code> folder and installs the engine.<div class="cmd"><code><span class="p">$ </span>npx bread-line@latest init</code><button class="copy" type="button" data-copy="npx bread-line@latest init">Copy</button></div></div></li>
+            <li><div><b>Install it.</b> This makes a <code>bread-line</code> folder and installs the engine.<div class="cmd"><code><span class="p">$ </span>npm create bread-line@latest</code><button class="copy" type="button" data-copy="npm create bread-line@latest">Copy</button></div></div></li>
             <li><div><b>Start Claude Code</b> in the folder.<div class="cmd"><code><span class="p">$ </span>cd bread-line &amp;&amp; claude</code><button class="copy" type="button" data-copy="cd bread-line && claude">Copy</button></div></div></li>
             <li><div><b>Ask for the setup.</b> Or just say &ldquo;set up Bread Line for me.&rdquo;<div class="cmd"><code>/bread-line-setup</code><button class="copy" type="button" data-copy="/bread-line-setup">Copy</button></div></div></li>
             <li><div><b>Answer the questions.</b> You get a private Bread Line page on claude.ai that writes cover letters from your resume, and a fresh batch every weekday at 8.</div></li>
@@ -425,7 +425,7 @@ footer .wrap { display: grid; grid-template-columns: auto minmax(0, 1fr) auto; g
         </div>
         <div role="tabpanel" id="panel-codex" aria-labelledby="tab-codex" hidden>
           <ol class="steps">
-            <li><div><b>Install it.</b> This makes a <code>bread-line</code> folder and installs the engine.<div class="cmd"><code><span class="p">$ </span>npx bread-line@latest init</code><button class="copy" type="button" data-copy="npx bread-line@latest init">Copy</button></div></div></li>
+            <li><div><b>Install it.</b> This makes a <code>bread-line</code> folder and installs the engine.<div class="cmd"><code><span class="p">$ </span>npm create bread-line@latest</code><button class="copy" type="button" data-copy="npm create bread-line@latest">Copy</button></div></div></li>
             <li><div><b>Start Codex</b> in the folder.<div class="cmd"><code><span class="p">$ </span>cd bread-line &amp;&amp; codex</code><button class="copy" type="button" data-copy="cd bread-line && codex">Copy</button></div></div></li>
             <li><div><b>Ask for the setup.</b> Or just say &ldquo;set up Bread Line for me.&rdquo;<div class="cmd"><code>$bread-line-setup</code><button class="copy" type="button" data-copy="$bread-line-setup">Copy</button></div></div></li>
             <li><div><b>Answer the questions.</b> You get a Bread Line page saved on your computer and a run your system scheduler starts every weekday. Codex asks before it adds the schedule.</div></li>
@@ -462,7 +462,7 @@ footer .wrap { display: grid; grid-template-columns: auto minmax(0, 1fr) auto; g
         <details><summary>What does it cost?</summary><p>Bread Line is free. Scoring uses your own Claude or ChatGPT plan, about as much as a few minutes of chat each morning.</p></details>
         <details><summary>Which jobs does it cover?</summary><p>Remote roles. It targets the US by default, and the setup can point it at another region. It works best for roles at tech companies that post on Greenhouse, Lever or Ashby. Hybrid and on-site roles aren&rsquo;t supported yet.</p></details>
         <details><summary>What if my computer is off at 8?</summary><p>With Claude Code, the run starts the next time the Claude app opens. With Codex, it waits for the next weekday. Either way you can say &ldquo;run the job radar&rdquo; any time, and a missed or repeated run never loses or duplicates jobs.</p></details>
-        <details><summary>How do I get updates?</summary><p>Run <code>npm update bread-line</code> in your Bread Line folder. Your profiles, filters and job history aren&rsquo;t touched.</p></details>
+        <details><summary>How do I get updates?</summary><p>Run <code>npm update @loafpickleww/bread-line</code> in your Bread Line folder. Your profiles, filters and job history aren&rsquo;t touched.</p></details>
         <details><summary>Can more than one person use one copy?</summary><p>Yes. Each person gets a profile folder of their own, with their own filters, watchlist, tracker and schedule.</p></details>
       </div>
     </div>

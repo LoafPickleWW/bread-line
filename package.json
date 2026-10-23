@@ -1,5 +1,5 @@
 {
-  "name": "bread-line",
+  "name": "@loafpickleww/bread-line",
   "version": "0.1.0",
   "description": "A daily remote job radar: fetches 150+ job boards, filters to your roles, and has Claude Code or Codex score each job against your resume.",
   "keywords": [
@@ -58,5 +58,8 @@
   },
   "engines": {
     "node": ">=20"
+  },
+  "publishConfig": {
+    "access": "public"
   }
 }
