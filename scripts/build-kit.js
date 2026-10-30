@@ -6,7 +6,7 @@
 import { readFile, writeFile, readdir, mkdir } from 'node:fs/promises';
 
 const root = new URL('../', import.meta.url);
-const INCLUDE = ['bin', 'src', 'scripts', 'tracker', 'profiles/_template', '.claude/skills', '.agents/skills',
+const INCLUDE = ['cli', 'src', 'scripts', 'tracker', 'profiles/_template', '.claude/skills', '.agents/skills',
   'README.md', 'RUNBOOK.md', 'AGENTS.md', 'package.json', '.gitignore', 'LICENSE'];
 
 const readJson = async (rel) => JSON.parse(await readFile(new URL(rel, root), 'utf8'));
